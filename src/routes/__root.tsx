@@ -60,6 +60,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Sentinel AI — Web Vulnerability Scanner" },
       { name: "description", content: "AI-powered web vulnerability scanner with intelligent threat detection." },
+      { property: "og:title", content: "Sentinel AI — Web Vulnerability Scanner" },
+      { name: "twitter:title", content: "Sentinel AI — Web Vulnerability Scanner" },
+      { property: "og:description", content: "AI-powered web vulnerability scanner with intelligent threat detection." },
+      { name: "twitter:description", content: "AI-powered web vulnerability scanner with intelligent threat detection." },
+      { name: "twitter:card", content: "summary" },
+      { property: "og:type", content: "website" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
