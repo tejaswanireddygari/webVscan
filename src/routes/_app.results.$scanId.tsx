@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SeverityBadge } from "@/components/SeverityBadge";
-import { mockScans, countBySeverity, type Severity } from "@/lib/mock-data";
+import { mockScans, countBySeverity, type Severity, type Scan } from "@/lib/mock-data";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_app/results/$scanId")({
@@ -36,7 +36,7 @@ export const Route = createFileRoute("/_app/results/$scanId")({
 const severities: Severity[] = ["critical", "high", "medium", "low", "info"];
 
 function ResultsPage() {
-  const { scan } = Route.useLoaderData();
+  const { scan } = Route.useLoaderData() as { scan: Scan };
   const [filter, setFilter] = useState<Severity | "all">("all");
   const [expanded, setExpanded] = useState<string | null>(scan.vulnerabilities[0]?.id ?? null);
   const counts = countBySeverity(scan.vulnerabilities);
