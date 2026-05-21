@@ -1,10 +1,11 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { ShieldCheck, Terminal, Lock, Mail } from "lucide-react";
+import { ShieldCheck, Terminal, Lock, Mail, Loader2 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/login")({
   component: LoginPage,
@@ -15,14 +16,27 @@ function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const { login } = useAuth();
+  const [busy, setBusy] = useState(false);
+  const { login, register } = useAuth();
   const nav = useNavigate();
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email) return;
-    login(email, name || email.split("@")[0]);
-    nav({ to: "/dashboard" });
+    if (!email || !password) return;
+    if (mode === "register" && password.length < 8) {
+      toast.error("Password must be at least 8 characters");
+      return;
+    }
+    setBusy(true);
+    try {
+      if (mode === "login") await login(email, password);
+      else await register(email, password);
+      nav({ to: "/dashboard" });
+    } catch (err: any) {
+      toast.error(err?.message || "Authentication failed");
+    } finally {
+      setBusy(false);
+    }
   };
 
   return (
@@ -110,7 +124,8 @@ function LoginPage() {
               </div>
             </div>
 
-            <Button type="submit" className="w-full font-mono uppercase tracking-wider">
+            <Button type="submit" disabled={busy} className="w-full font-mono uppercase tracking-wider">
+              {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               {mode === "login" ? "→ Authenticate" : "→ Create account"}
             </Button>
           </form>
