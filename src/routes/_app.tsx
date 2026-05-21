@@ -5,8 +5,8 @@ import { AppSidebar } from "@/components/AppSidebar";
 export const Route = createFileRoute("/_app")({
   beforeLoad: ({ location }) => {
     if (typeof window === "undefined") return;
-    const raw = localStorage.getItem("vulnscan_user");
-    if (!raw) {
+    const token = localStorage.getItem("vulnscan_token");
+    if (!token) {
       throw redirect({ to: "/login", search: { redirect: location.href } as never });
     }
   },
