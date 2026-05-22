@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { ShieldCheck, Terminal, Lock, Mail, Loader2 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { demoMode, tokenStore } from "@/lib/api";
 
 export const Route = createFileRoute("/login")({
   component: LoginPage,
@@ -136,7 +137,17 @@ function LoginPage() {
         </div>
 
         <p className="mt-6 text-center font-mono text-xs text-muted-foreground">
-          <Link to="/dashboard" className="hover:text-primary">Skip → demo dashboard</Link>
+          <button
+            type="button"
+            onClick={() => {
+              demoMode.set(true);
+              tokenStore.set("demo.jwt.token");
+              window.location.href = "/dashboard";
+            }}
+            className="hover:text-primary"
+          >
+            Skip → demo dashboard
+          </button>
         </p>
       </div>
     </div>
