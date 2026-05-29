@@ -1,0 +1,14 @@
+version: "3.9"
+services:
+  api:
+    build: .
+    container_name: sentinel-api
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=sqlite:///./vulnscan.db
+      - JWT_SECRET=change-me-in-production-please
+      - CORS_ORIGINS=*
+    volumes:
+      - ./:/app
+    restart: unless-stopped
